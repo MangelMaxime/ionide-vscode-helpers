@@ -23,6 +23,22 @@ module Promise =
     let reject<'T> reason : Promise<'T> =
         Promise.reject<'T> reason
 
+    /// <summary>
+    /// Allows handing promise which is in fulfilled state.
+    /// Can be used for side-effects.
+    /// </summary>
+    let onSuccess (a : 'T -> unit) (pr : Promise<'T>) : Promise<'T> =
+        pr.``then``(
+            (fun value -> a value; value)
+        )
+
+    /// <summary>
+    /// Allows handing promise which is in rejected state. Propagates rejected promise, to allow chaining.
+    /// Can be used for side-effects.
+    /// </summary>
+    let onFail (a : obj -> unit) (pr : JS.Promise<'T>) : JS.Promise<'T> =
+        pr.catch (fun reason -> a reason |> ignore; (Promise.reject reason) |> unbox)
+
 //---------------------------------------------------
 //VS Code Helpers
 //---------------------------------------------------

@@ -9,6 +9,21 @@ module JS =
     let isDefined (o: obj) : bool = failwith "never"
 
 //---------------------------------------------------
+//PromisesExt (by Dave)
+//---------------------------------------------------
+module Promise =
+    open System
+    open Fable.Core
+    open Fable.Import
+    open Fable.Import.JS
+
+    /// <summary>
+    /// Creates promise (in rejected state) with supplied reason.
+    /// </summary>
+    let reject<'T> reason : Promise<'T> =
+        Promise.reject<'T> reason
+
+//---------------------------------------------------
 //VS Code Helpers
 //---------------------------------------------------
 module VSCode =

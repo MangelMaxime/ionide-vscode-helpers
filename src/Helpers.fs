@@ -15,19 +15,19 @@ module Promise =
     open System
     open Fable.Core
     open Fable.Import
-    open Fable.Import.JS
+    open Fable.Import
 
     /// <summary>
     /// Creates promise (in rejected state) with supplied reason.
     /// </summary>
-    let reject<'T> reason : Promise<'T> =
-        Promise.reject<'T> reason
+    let reject<'T> reason : JS.Promise<'T> =
+        JS.Promise.reject<'T> reason
 
     /// <summary>
     /// Allows handing promise which is in fulfilled state.
     /// Can be used for side-effects.
     /// </summary>
-    let onSuccess (a : 'T -> unit) (pr : Promise<'T>) : Promise<'T> =
+    let onSuccess (a : 'T -> unit) (pr : JS.Promise<'T>) : JS.Promise<'T> =
         pr.``then``(
             (fun value -> a value; value)
         )
@@ -37,7 +37,9 @@ module Promise =
     /// Can be used for side-effects.
     /// </summary>
     let onFail (a : obj -> unit) (pr : JS.Promise<'T>) : JS.Promise<'T> =
-        pr.catch (fun reason -> a reason |> ignore; (Promise.reject reason) |> unbox)
+        pr.catch (fun reason -> a reason |> ignore; (reject reason) |> unbox)
+
+    let empty<'T> = Promise.lift (unbox<'T>null)
 
 //---------------------------------------------------
 //VS Code Helpers

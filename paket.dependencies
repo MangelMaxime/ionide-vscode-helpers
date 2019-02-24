@@ -5,6 +5,7 @@ clitool dotnet-fable
 nuget Fable.Core
 nuget Fable.Import.Node
 nuget FSharp.Core
+nuget Fable.Promise
 
 group build
     source https://www.nuget.org/api/v2
